@@ -1,7 +1,23 @@
 #from CubeElement import CubeElement
 import copy
 
+
 class CubeElement():
+    def __init__(self):
+        self.elist={}
+
+    def get_insert(self,name:str=None):
+        if name in self.elist.keys():
+            return self.elist[name]
+        else:
+            new = CubeElement()
+            self.elist[name] = new
+            return new
+
+    def get_get(self,name:str=None):
+        return self.elist[name]
+
+class CubeElement_old():
     def __init__(self):
         self.elist = {}
 
@@ -38,6 +54,7 @@ class CubeElement():
             tmprowdict = rowdict
             tmprowdict[datakey]=self.elist[datakey]
             return [tmprowdict]
+
     def getjson(self,dimlist:[]=None,level:int=None,rowdict:{}={}):
         if level != len(dimlist):
             rowlist=[]
