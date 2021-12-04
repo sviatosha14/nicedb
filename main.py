@@ -1,5 +1,8 @@
 from Controller.DataController import DataController
 
-cn = DataController()
+#cn = DataController()
 
-print(cn.dimensions_cube.cubetojson())
+#print(cn.dimensions_cube.cubetojson())
+
+if type([])==list:
+    print('lol')

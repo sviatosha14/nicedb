@@ -4,38 +4,31 @@ import copy
 
 class CubeElement():
     def __init__(self):
-        self.elist={}
-
-    def get_insert(self,name:str=None):
-        if name in self.elist.keys():
-            return self.elist[name]
-        else:
-            new = CubeElement()
-            self.elist[name] = new
-            return new
-
-    def get_get(self,name:str=None):
-        return self.elist[name]
-
-class CubeElement_old():
-    def __init__(self):
         self.elist = {}
 
     def getelem(self,elemnm):
         return self.elist[elemnm]
     def builddatatree(self,elements:{}=None,dimlist:[]=None,level:int=None,data:{}=None):
         if level != len(dimlist):
-            newleaf = CubeElement()
-            self.elist[elements[dimlist[level]]] = newleaf
-            newleaf.builddatatree(elements=elements,dimlist=dimlist,level=level+1,data=data)
+            if elements[dimlist[level]] in self.elist.keys():
+                leaf = self.elist[elements[dimlist[level]]]
+            else:
+                leaf = CubeElement()
+                self.elist[elements[dimlist[level]]] = leaf
+            leaf.builddatatree(elements=elements,dimlist=dimlist,level=level+1,data=data)
         else:
             self.elist = data
+
     def getvalue(self,elements:{}=None,dimlist:[]=None,level:int=None,datakey:str=None):
         if level != len(dimlist):
-            try:
-                value =  self.elist[elements[dimlist[level]]].getvalue(elements=elements,dimlist=dimlist,level=level+1,datakey=datakey)
-            except KeyError:
-                value = 0
+            if type(elements[dimlist[level]]) != list:
+                elements[dimlist[level]] = [elements[dimlist[level]]]
+            value = 0
+            for elem in elements[dimlist[level]]:
+                try:
+                    value+= self.elist[elem].getvalue(elements=elements,dimlist=dimlist,level=level+1,datakey=datakey)
+                except KeyError:
+                    pass
             return value
         else:
             return self.elist[datakey]
@@ -69,3 +62,17 @@ class CubeElement_old():
             tmprowdict['data']=self.elist
             return [tmprowdict]
 
+class Wrong_CubeElement():
+    def __init__(self):
+        self.elist={}
+
+    def get_insert(self,name:str=None):
+        if name in self.elist.keys():
+            return self.elist[name]
+        else:
+            new = CubeElement()
+            self.elist[name] = new
+            return new
+
+    def get_get(self,name:str=None):
+        return self.elist[name]
