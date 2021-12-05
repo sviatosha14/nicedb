@@ -32,3 +32,20 @@ class Dimension():
     def delete(self,name:str=None):
         del self.elements[name]
 
+    def getchild(self,name:str=None):
+        try:
+            return self.elements[name].children.keys()
+        except KeyError:
+            raise Exception('Element ' + name + ' does not exist in ' + self.name)
+
+    def getdetail(self,name:str=None):
+        children = self.getchild(name)
+        if children == []:
+            return name
+        else:
+            detail = []
+            for elem in children:
+                detail.append(self.getdetail(name=elem))
+        return detail
+
+

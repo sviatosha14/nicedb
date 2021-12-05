@@ -11,10 +11,21 @@ class Cube():
         self.name = name
         self.dims = dims
         self.data = CubeElement()
+        self.dimdict = {}
+        for dim in self.dims:
+            self.dimdict[dim.name] = dim
 
     def insertvalue(self,insertstatenment:{}=None):
         self.data.builddatatree(elements=insertstatenment['elements'],dimlist=self.dims,level=0,data=insertstatenment['data'])
+
     def getvalue(self,getstatenment:{}=None):
+        #checking dimension element levels:
+        for dimension in getstatenment['elements'].keys():
+            for elem in getstatenment['elements'][dimension]:
+                detail=self.dimdict[dimension].getdetail(elem)
+                if detail != elem:
+                    getstatenment['elements'][dimension].remove(elem)
+                    getstatenment['elements'][dimension].append({elem:detail})
         return self.data.getvalue(elements=getstatenment['elements'],dimlist=self.dims,level=0,datakey=getstatenment['datakey'])
     def getmultiplevalue(self,getstatenment:{}=None):
         return self.data.getmultiplevalues(elements=getstatenment['elements'],dimlist=self.dims,level=0,datakey=getstatenment['datakey'])
